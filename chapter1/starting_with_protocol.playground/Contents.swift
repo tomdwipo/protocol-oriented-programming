@@ -184,3 +184,34 @@ for person in people where person is SwiftProgrammer {
 if let _ = myPerson as? SwiftProgrammer {
  print("(person.firstName) is a Swift Programmer")
 }
+
+//Associated types with protocols
+protocol Queue {
+ associatedtype QueueType
+ mutating func addItem(item: QueueType)
+ mutating func getItem() -> QueueType?
+ func count() -> Int
+}
+//The associated type basically says: we don't know the exact type to use therefore, when a type adopts this protocol, it will define it.
+struct IntQueue: Queue {
+    typealias QueueType = Int
+    var items = [Int]()
+    mutating func addItem(item: Int) {
+        items.append(item)
+    }
+    
+    mutating func getItem() -> Int? {
+        if items.count > 0 {
+            return items.remove(at: 0)
+        }else{
+            return nil
+        }
+    }
+    
+    func count() -> Int {
+        return items.count
+    }
+    
+    
+    
+}

@@ -211,7 +211,44 @@ struct IntQueue: Queue {
     func count() -> Int {
         return items.count
     }
-    
-    
-    
 }
+
+// Delegation pattern
+protocol DisplayNameDelegate {
+    func displayName(name: String)
+}
+
+struct Person1 {
+    var displayNameDelegate: DisplayNameDelegate
+    var firstName = "" {
+        didSet {
+            displayNameDelegate.displayName(name: getFullName())
+        }
+    }
+    
+    var lastName = "" {
+        didSet {
+            displayNameDelegate.displayName(name: getFullName())
+        }
+    }
+    
+    init(displayNameDelegate: DisplayNameDelegate) {
+        self.displayNameDelegate = displayNameDelegate
+    }
+    
+    func getFullName() -> String{
+        return "\(firstName) \(lastName)"
+    }
+}
+
+// to conform
+struct MyDisplayName: DisplayNameDelegate {
+    func displayName(name: String) {
+        print("Name: \(name)")
+    }
+}
+
+var myDisplayName = MyDisplayName()
+var person1 = Person1(displayNameDelegate: myDisplayName)
+person1.firstName = "Tommy"
+person1.lastName = "Putra"
